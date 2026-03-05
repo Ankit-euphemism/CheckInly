@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-top: #f8fbff;
+            --bg-bottom: #eef3f8;
+            --card-bg: #ffffff;
+            --text-main: #223046;
+            --text-subtle: #5f6e82;
+            --line: #dbe4ee;
+            --head-bg: #1f4f7b;
+            --head-text: #f9fcff;
+            --btn-bg: #d66f2f;
+            --btn-hover: #b95d24;
+            --accent-soft: #f7efe8;
+            --ok: #1f8f5f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Manrope", sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 20% 15%, #dce9f7 0, transparent 35%),
+                radial-gradient(circle at 80% 90%, #f8ddcb 0, transparent 30%),
+                linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+            padding: 28px 14px;
+        }
+
+        .container {
+            width: min(1040px, 100%);
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 18px;
+            border: 1px solid var(--line);
+            box-shadow: 0 18px 40px rgba(24, 40, 58, 0.12);
+            overflow: hidden;
+            animation: rise 0.55s ease;
+        }
+
+        .header {
+            padding: 26px 28px 18px;
+            background: linear-gradient(145deg, #f0f6fc, #ffffff);
+            border-bottom: 1px solid var(--line);
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: var(--text-subtle);
+            font-size: 0.96rem;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            padding: 18px 22px 10px;
+        }
+
+        .alerts {
+            padding: 14px 22px 0;
+            display: grid;
+            gap: 8px;
+        }
+
+        .alert {
+            padding: 11px 12px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .alert.success {
+            background: #e9f8ef;
+            color: #1f704b;
+            border-color: #bfe8d0;
+        }
+
+        .alert.error {
+            background: #fdeeee;
+            color: #9a2d2a;
+            border-color: #f5c6c3;
+        }
+
+        .alert.warning {
+            background: #fff7e8;
+            color: #8a5a1f;
+            border-color: #f0d7ad;
+        }
+
+        .alert.info {
+            background: #edf6ff;
+            color: #1f4f7b;
+            border-color: #c8def3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead th {
+            padding: 13px 14px;
+            background: var(--head-bg);
+            color: var(--head-text);
+            text-align: left;
+            font-size: 0.93rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--line);
+            background: #ffffff;
+        }
+
+        tbody tr:nth-child(even) td {
+            background: #f9fbfe;
+        }
+
+        tbody tr:hover td {
+            background: var(--accent-soft);
+            transition: background-color 0.2s ease;
+        }
+
+        .roll {
+            width: 100%;
+            max-width: 170px;
+            padding: 9px 10px;
+            border: 1px solid #c7d4e2;
+            border-radius: 8px;
+            background: #eef4fa;
+            color: #26425f;
+            font-weight: 600;
+        }
+
+        .check-cell {
+            text-align: center;
+        }
+
+        .present-check {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--ok);
+            cursor: pointer;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 14px 22px 24px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 20px;
+            background: var(--btn-bg);
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--btn-hover);
+            transform: translateY(-1px);
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 14px 10px;
+            }
+
+            .header {
+                padding: 18px 16px 14px;
+            }
+
+            .table-wrap {
+                padding: 12px 10px 8px;
+            }
+
+            .alerts {
+                padding: 10px 10px 0;
+            }
+
+            .footer {
+                padding: 10px 10px 16px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<section class="container">
+    <div class="header">
+        <h2>Mark Attendance</h2>
+        <p class="subtitle">Select present students and submit today's attendance.</p>
+    </div>
+
+    {% if messages %}
+    <div class="alerts">
+        {% for message in messages %}
+        <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Present</th>
+                        <th>Roll Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td class="check-cell"><input class="present-check" type="checkbox" name="student_{{ student.id }}"></td>
+                        <td><input class="roll" type="text" name="students" value="{{ student.roll_number }}" readonly></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <button type="submit">Submit Attendance</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>
