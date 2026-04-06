@@ -1,6 +1,6 @@
 # CheckInly
 
-A small Django-based Student Management System for tracking and marking attendance.
+A small Django-based CheckInlyfor tracking and marking attendance.
 
 ## Requirements
 - Python 3.11+ (use a virtual environment)
