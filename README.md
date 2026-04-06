@@ -1,10 +1,33 @@
 # CheckInly
 
-A small Django-based CheckInly for tracking and marking attendance.
+CheckInly is a Django-based student management system for keeping a simple student roster and marking daily attendance.
+
+## Features
+
+- Add and manage students through Django admin.
+- Mark attendance for all students for the current day.
+- View attendance history for an individual student.
+- Prevent duplicate attendance entries for the same student on the same date.
 
 ## Requirements
-- Python 3.11+ (use a virtual environment)
-- See `requirements.txt` for Python package versions (Django 6.0.1, etc.)
+
+- Python 3.11+
+- A virtual environment is recommended
+- See `requirements.txt` for the exact package versions, including Django 6.0.1, Daphne, `python-dotenv`, and PostgreSQL drivers
+
+## Database setup
+
+The current Django settings use PostgreSQL and read credentials from environment variables loaded with `python-dotenv`.
+
+Create a `.env` file in the repository root with values like:
+
+```env
+your_database=checkinly
+your_username=postgres
+your_pass=your_password
+```
+
+If you want to use a different database backend, update `student_data/student_data/settings.py` accordingly.
 
 ## Quick setup
 
@@ -21,52 +44,55 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. Apply migrations (the repository includes a default SQLite at `student_data/db.sqlite3`)
+3. Run migrations
 
 ```powershell
-# from the repository root
 python student_data/manage.py migrate
 ```
 
-4. (Optional) Create a superuser
+4. Create a superuser for the admin site
 
 ```powershell
 python student_data/manage.py createsuperuser
 ```
 
-5. Run the development server
+5. Start the development server
 
 ```powershell
 python student_data/manage.py runserver
 ```
 
-Then open http://127.0.0.1:8000/ in your browser.
+Open `http://127.0.0.1:8000/` in your browser.
+
+## App routes
+
+- `/` - view attendance page
+- `/mark/` - mark attendance page
+- `/admin/` - Django admin
+
+## Project structure
+
+- `student_data/manage.py` - Django management entry point
+- `student_data/student_data/` - project settings, URL configuration, ASGI and WSGI modules
+- `student_data/records/` - main app for students and attendance
+- `student_data/records/models.py` - `Student` and `Attendance` models
+- `student_data/records/views.py` - attendance views
+- `student_data/records/templates/` - `mark_attendance.html` and `view_attendance.html`
 
 ## Tests
 
-Run the Django test suite:
+Run the Django test suite with:
 
 ```powershell
 python student_data/manage.py test
 ```
 
-## Project structure (high level)
-
-- `student_data/` — Django project root
-	- `settings.py`, `urls.py`, `wsgi.py`, `asgi.py`
-- `records/` — main app for student/attendance features
-	- `models.py`, `views.py`, `urls.py`, `templates/` (contains `mark_attendance.html`, `view_attendance.html`)
-- `db.sqlite3` — development database (included)
-
 ## Notes
-- The project is configured for local development using SQLite. The `requirements.txt` includes `psycopg2` for Postgres if you choose to switch databases.
-- If you use PowerShell and encounter execution policy issues when activating the venv, run:
+
+- The project uses the `records` app for the attendance workflow.
+- If PowerShell blocks script execution when activating the virtual environment, run:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
-
-## Next steps
-- Run the server and verify the attendance UI at the app routes.
-- Ask me to add a `Makefile` or PowerShell script for one-command setup if you'd like.
 
