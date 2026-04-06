@@ -1,4 +1,4 @@
-# Student Management System
+# CheckInly
 
 A small Django-based Student Management System for tracking and marking attendance.
 
